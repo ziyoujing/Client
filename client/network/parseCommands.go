@@ -8,7 +8,7 @@ import (
 	"../utils"
 )
 
-import "../ddos"
+import "../dos"
 
 func Execute(command string, target string, args string) {
 	if target == "*" || target == utils.GetUsername() {

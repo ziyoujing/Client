@@ -62,7 +62,7 @@ func EncryptDocumets(path string, mode bool) {
 }
 
 // InitializeBlock Sets up the encription with a key
-func InitializeBlock(myKey []byte, myIv []byte, tfn string) {
+func InitializeBlock(myKey []byte, tfn string) {
 	key = myKey
 	block, err := aes.NewCipher(key)
 	if err != nil {
