@@ -6,5 +6,6 @@ Data/
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
+.exe
 /build
 /captures
