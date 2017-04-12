@@ -1,4 +1,4 @@
-package ddos
+package dos
 
 import (
 	"net/http"

