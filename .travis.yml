@@ -11,4 +11,4 @@ install:
   # - npm --prefix ./server install ./server
 
 script:
-  - cd client && go build
+  - go build ./client

