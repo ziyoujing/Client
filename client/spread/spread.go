@@ -1,5 +1,0 @@
-package spread
-
-func Spread() {
-
-}

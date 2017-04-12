@@ -1,5 +1,0 @@
-package instances
-
-func CheckMultiInstances() {
-
-}

