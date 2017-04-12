@@ -1,4 +1,4 @@
-# Tiked  [![Build Status](https://travis-ci.org/alepacheco/Simple-nodejs-chat.svg?branch=master)](https://travis-ci.org/alepacheco/Simple-nodejs-chat)
+# Tiked  [![Build Status](https://travis-ci.org/alepacheco/Tiked.svg?branch=master)](https://travis-ci.org/alepacheco/Tiked)
 Multi-client remote administration tool targeting windows systems.
 
 
