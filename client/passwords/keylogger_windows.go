@@ -1,5 +1,12 @@
 package passwords
 
+/*
+**
+**	Code by: @SaturnsVoid
+**	Source repo: https://github.com/SaturnsVoid/Windows-KeyLogger
+**
+*/
+
 import (
 	"time"
 
