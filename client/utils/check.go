@@ -18,6 +18,5 @@ func CheckT(err error, t *testing.T) {
 func Check(err error) {
 	if err != nil {
 		fmt.Println("error:", err)
-		panic(err)
 	}
 }
