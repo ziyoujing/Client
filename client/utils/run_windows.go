@@ -1,5 +1,9 @@
 package utils
 
+/*
+** Partial code by @EgeBalci Repo: https://github.com/EgeBalci/EGESPLOIT
+ */
+
 import "os/exec"
 import "syscall"
 import "unsafe"

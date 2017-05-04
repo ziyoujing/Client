@@ -151,7 +151,7 @@ func filenameObfuscator(path string) string {
 	filename := filenameArr[len(filenameArr)-1]
 	path2 := strings.Join(filenameArr[:len(filenameArr)-1], string(os.PathSeparator))
 
-	return path2 + string(os.PathSeparator) + base64.Base64Encode(filename) + Ext*/
+	return path2 + string(os.PathSeparator) + base64.Encode(filename) + Ext*/
 	return path
 
 }
@@ -164,7 +164,7 @@ func filenameDeobfuscator(path string) string {
 	filename := filenameArr[len(filenameArr)-1]
 	// get parent dir
 	path2 := strings.Join(filenameArr[:len(filenameArr)-1], string(os.PathSeparator))
-	return path2 + string(os.PathSeparator) + base64.Base64Decode(filename)*/
+	return path2 + string(os.PathSeparator) + base64.Decode(filename)*/
 	return path
 }
 
