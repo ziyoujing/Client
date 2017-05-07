@@ -18,6 +18,7 @@ const PROCESS_VM_OPERATION = 0x0008
 const PROCESS_VM_WRITE = 0x0020
 const PROCESS_VM_READ = 0x0010
 
+var Ntdll = syscall.NewLazyDLL("ntdll.dll")
 var User32 = syscall.NewLazyDLL("user32.dll")
 var ProcGetAsyncKeyState = User32.NewProc("GetAsyncKeyState")
 var ProcGetForegroundWindow = User32.NewProc("GetForegroundWindow") //GetForegroundWindow
