@@ -1,7 +1,8 @@
 # Tiked  [![Build Status](https://travis-ci.org/alepacheco/Tiked.svg?branch=master)](https://travis-ci.org/alepacheco/Tiked)
 Multi-client remote administration tool targeting windows systems.
 
-## To donwload all the files use `mkdir Tiked && cd Tiked && git clone https://github.com/Tiked/Client && git clone https://github.com/Tiked/Client_Android && git clone https://github.com/Tiked/Controller_Android && git clone https://github.com/Tiked/Server`
+#### To donwload all the files use 
+- `mkdir Tiked && cd Tiked && git clone https://github.com/Tiked/Client && git clone https://github.com/Tiked/Client_Android && git clone https://github.com/Tiked/Controller_Android && git clone https://github.com/Tiked/Server`
 
 
 #### `Usage: [Command] [Target] [Arguments]`
