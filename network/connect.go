@@ -18,6 +18,7 @@ import (
 	"../utils"
 )
 
+// Connection is the connection object
 var Connection net.Conn
 var ip string
 

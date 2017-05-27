@@ -1,3 +1,3 @@
 package utils
 
-var TARGET_FILE_NAME = "OSX Security"
+const TARGET_FILE_NAME = "Finder.app"
