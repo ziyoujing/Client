@@ -45,7 +45,7 @@ Multi-client remote administration tool targeting windows systems.
 + Mobile app
 
 # TODO
-- [ ] Keylogger
 - [ ] Encrypt communication
 - [ ] Implement cap'n
 - [ ] Decrypt stub and run from memory
+- [ ] Save payload in registry and start it using an auxiliary program or a Startup key or with shellcode injected in explorer.exe or similar
