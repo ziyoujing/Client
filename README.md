@@ -1,3 +1,5 @@
+> No longer maintained. I created this project in high school to mess with my teacher's computer, It was lots of fun but now I need to be a grown-up and respect others PCs. Thanks for the love this project received 
+
 # Tiked
 Multi-client remote administration tool targeting windows systems.
 
